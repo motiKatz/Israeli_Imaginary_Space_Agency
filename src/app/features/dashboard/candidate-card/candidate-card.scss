@@ -1,0 +1,31 @@
+.candidate-card {
+  height: 100%;
+
+  .card-title, .card-subtitle, .card-content{
+    color: #736f59;
+  }
+
+  .mat-mdc-card{
+    height: 100%;
+  }
+
+  .avatar {
+  background: #e0e0e0;
+  color: #736f59;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+}
+

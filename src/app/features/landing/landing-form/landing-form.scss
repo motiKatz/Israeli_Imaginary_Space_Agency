@@ -1,0 +1,23 @@
+.landing-container {
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+
+  .file-input-wrapper {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+}
+
+.landing-card {
+  max-width: 720px;
+  width: 100%;
+}
+
+.image-preview {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+}

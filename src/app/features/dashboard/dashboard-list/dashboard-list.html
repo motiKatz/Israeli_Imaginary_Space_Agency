@@ -1,0 +1,40 @@
+<section class="dashboard-container">
+  <h2 style="margin:0;">IISA Candidates</h2>
+
+  <div class="filters-row">
+    <mat-form-field class="filter-field" appearance="outline">
+      <mat-label>Search by name</mat-label>
+      <input matInput placeholder="e.g. Noa" [ngModel]="nameQuery()" (ngModelChange)="nameQuery.set($event)" />
+      <button mat-icon-button matSuffix (click)="nameQuery.set('')" [disabled]="!nameQuery()" aria-label="Clear">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <mat-form-field class="filter-field" appearance="outline">
+      <mat-label>Search by city/region</mat-label>
+      <input matInput placeholder="e.g. Haifa" [ngModel]="cityQuery()" (ngModelChange)="cityQuery.set($event)" />
+      <button mat-icon-button matSuffix (click)="cityQuery.set('')" [disabled]="!cityQuery()" aria-label="Clear">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <mat-form-field class="filter-field" appearance="outline">
+      <mat-label>Search by age</mat-label>
+      <input matInput type="number" placeholder="e.g. 29" [ngModel]="ageQuery()"
+        (ngModelChange)="ageQuery.set($event)" />
+      <button mat-icon-button matSuffix (click)="ageQuery.set(null)" [disabled]="!ageQuery()" aria-label="Clear">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+  <div class="cards-grid">
+    @for (c of filtered(); track c.id) {
+    <app-candidate-card [candidate]="c"></app-candidate-card>
+    }
+  </div>
+
+  @if (!filtered().length) {
+  <p>No candidates match your search.</p>
+  }
+</section>

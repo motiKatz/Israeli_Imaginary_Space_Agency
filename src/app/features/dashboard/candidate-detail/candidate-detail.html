@@ -1,0 +1,63 @@
+<section class="detail-container">
+  <div class="detail-card">
+    <a class="back-link" routerLink="/dashboard">Back to dashboard</a>
+
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>{{ candidate()!.name }}</mat-card-title>
+
+        <span class="spacer"></span>
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="More options">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item [routerLink]="['/landing', candidate()!.id]">
+            <mat-icon>edit</mat-icon>
+            <span>Edit</span>
+          </button>
+          <button mat-menu-item (click)="deleteCandidate(candidate()!.id)">
+            <mat-icon color="warn">delete</mat-icon>
+            <span>Delete</span>
+          </button>
+        </mat-menu>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="profile">
+          <div class="profile-image">
+            @if(candidate()!.image) {
+            <img [src]="candidate()?.image" alt="{{ candidate()?.name }}" />
+            }
+            @else{
+            <div class="image-placeholder">{{ candidate()!.name | initials }}</div>
+            }
+          </div>
+
+          <div class="profile-details">
+            <p><strong>Email:</strong> {{ candidate()?.email }}</p>
+            <p><strong>Phone:</strong> {{ candidate()?.phone }}</p>
+            <p><strong>Age:</strong> {{ candidate()?.age }}</p>
+            <p><strong>City:</strong> {{ candidate()?.city }}</p>
+            <p><strong>Hobbies:</strong> {{ candidate()?.hobbies }}</p>
+            <p><strong>Why:</strong> {{ candidate()?.why }}</p>
+            <p><strong>Summary:</strong> {{ candidate()?.summary }}</p>
+            <p><strong>Submitted:</strong> {{ candidate()?.submittedAt | date:'medium' }}</p>
+            @if(candidate()?.updatedAt){
+            <p><strong>Last Updated:</strong> {{ candidate()?.updatedAt | date:'medium' }}</p>
+            }
+            <p><strong>Source:</strong> {{ candidate()?.source || 'public' }}</p>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions class="nav-actions">
+        @if(prevId()){
+        <a mat-button [routerLink]="['/candidate', prevId()]" class="previous-link">Previous</a>
+        }
+        @if(nextId()){
+        <a mat-button [routerLink]="['/candidate', nextId()]" class="next-link">Next</a>
+        }
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</section>

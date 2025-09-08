@@ -1,0 +1,100 @@
+<section class="landing-container">
+  <mat-card class="landing-card">
+    <mat-card-header>
+      <mat-card-title>Spaceflight Candidate Registration</mat-card-title>
+      <mat-card-subtitle>Apply and you can edit for 3 days</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      @if (info()) { <p>{{ info() }}</p> }
+
+      <form [formGroup]="form" (ngSubmit)="submit()" style="display:grid;grid-template-columns:1fr;gap:12px;">
+        <mat-form-field appearance="outline">
+          <mat-label>Full name</mat-label>
+          <input matInput formControlName="name" required />
+          @if (form.get('name')?.hasError('required') && (form.get('name')?.touched || form.get('name')?.dirty)) {
+          <mat-error>Name is required.</mat-error>
+          }
+          @if (form.get('name')?.hasError('minlength') && (form.get('name')?.touched || form.get('name')?.dirty)) {
+          <mat-error>Name must be at least 2 characters.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" type="email" required />
+          @if (form.get('email')?.hasError('required') && (form.get('email')?.touched || form.get('email')?.dirty)) {
+          <mat-error>Email is required.</mat-error>
+          }
+          @if (form.get('email')?.hasError('email') && (form.get('email')?.touched || form.get('email')?.dirty)) {
+          <mat-error>Enter a valid email address.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Phone</mat-label>
+          <input matInput formControlName="phone" required />
+          @if (form.get('phone')?.hasError('required') && (form.get('phone')?.touched || form.get('phone')?.dirty)) {
+          <mat-error>Phone is required.</mat-error>
+          }
+        </mat-form-field>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <mat-form-field appearance="outline">
+            <mat-label>Age</mat-label>
+            <input matInput formControlName="age" type="number" required />
+            @if (form.get('age')?.hasError('required') && (form.get('age')?.touched || form.get('age')?.dirty)) {
+            <mat-error>Age is required.</mat-error>
+            }
+            @if (form.get('age')?.hasError('min') && (form.get('age')?.touched || form.get('age')?.dirty)) {
+            <mat-error>Minimum age is 18.</mat-error>
+            }
+            @if (form.get('age')?.hasError('max') && (form.get('age')?.touched || form.get('age')?.dirty)) {
+            <mat-error>Maximum age is 80.</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>City or region</mat-label>
+            <input matInput formControlName="city" required />
+            @if (form.get('city')?.hasError('required') && (form.get('city')?.touched || form.get('city')?.dirty)) {
+            <mat-error>City/region is required.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Hobbies</mat-label>
+          <textarea matInput formControlName="hobbies" rows="2"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Why I am the perfect candidate</mat-label>
+          <textarea matInput formControlName="why" rows="4"></textarea>
+        </mat-form-field>
+
+        <!-- <div style="display:flex;gap:12px;align-items:center;"> -->
+        <!-- <input type="file" accept="image/png,image/jpeg" (change)="onImageSelected($event)" />
+          @if (imagePreview()) {
+          <img [src]="imagePreview()!" alt="Profile preview" class="image-preview" />
+          } -->
+
+         <div class="file-input-wrapper">
+           <app-file-input formControlName="image" [disabled]="form.disabled"></app-file-input>
+          <!-- @if (imagePreview()) {
+          <img [src]="imagePreview()!" alt="Profile preview" class="image-preview" />
+          } -->
+        </div>
+
+        <!-- </div> -->
+
+        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:8px;">
+          <button mat-stroked-button type="button" (click)="form.reset(); imagePreview.set(null)">Reset</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+            {{ isEditMode() ? 'Update' : 'Submit' }}
+          </button>
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</section>

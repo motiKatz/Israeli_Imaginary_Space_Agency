@@ -1,0 +1,18 @@
+<div class="candidate-card">
+    <a [routerLink]="['/candidate', candidate().id]" style="text-decoration:none;">
+        <mat-card>
+            <mat-card-header>
+                <div mat-card-avatar class="avatar">
+                    @if(candidate().image){<img [src]="candidate().image" alt="Profile image" />}
+                    @else{
+                    {{ candidate().name | initials}}
+                    } </div>
+                <mat-card-title class="card-title">{{candidate().name }}</mat-card-title>
+                <mat-card-subtitle class="card-subtitle">{{ candidate().city }} • {{ candidate().age }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <p class="card-content">{{ candidate().summary }}</p>
+            </mat-card-content>
+        </mat-card>
+    </a>
+</div>

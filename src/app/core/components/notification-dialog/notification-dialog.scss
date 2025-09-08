@@ -1,0 +1,45 @@
+// h2, p {
+//   margin: 0;
+//   padding: 0;
+// }
+
+.success {
+  color: #155724;
+//   background-color: #d4edda;
+//   padding: 8px;
+  border-radius: 4px;
+}
+
+.error {
+  color: #b31525;
+//   background-color: #f8d7da;
+//   padding: 8px;
+  border-radius: 4px;
+}
+
+.info {
+  color: #0c5460;
+//   background-color: #d1ecf1;
+//   padding: 8px;
+  border-radius: 4px;
+}
+
+.warning {
+  color: #856404;
+//   background-color: #fff3cd;
+//   padding: 8px;
+  border-radius: 4px;
+}
+
+mat-dialog-content {
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+mat-dialog-actions {
+  margin-top: 12px;
+}
+
+button {
+  min-width: 80px;
+}

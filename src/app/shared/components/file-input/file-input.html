@@ -1,0 +1,21 @@
+<!-- <div class="file-upload-container">
+  <button mat-stroked-button color="primary" type="button" (click)="fileInput.click()">
+    Upload Profile Image
+  </button>
+  <span class="file-name">{{ fileName || 'No file selected' }}</span>
+  <input #fileInput [disabled]="isDisabled" type="file" accept="image/png,image/jpeg" (change)="onFileSelected($event)" hidden />
+
+  @if (value) {
+    <img [src]="value" alt="Preview" class="image-preview" />
+  }
+</div> -->
+
+<div class="file-input-wrapper" [class.disabled]="isDisabled">
+    <button type="button" class="upload-btn" (click)="fileInput.click()" [disabled]="isDisabled">
+        {{ value ? 'Change Image' : 'Upload Image' }}
+    </button>
+    <input type="file" accept="image/png, image/jpeg" #fileInput (change)="onFileSelected($event)" hidden />
+    @if (value) {
+    <img [src]="value" alt="Preview" class="preview-img" />
+    }
+</div>
