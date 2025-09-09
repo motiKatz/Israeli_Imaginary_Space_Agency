@@ -1,4 +1,3 @@
-// core/services/notification.service.ts
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NotificationType, NotificationDialog } from '../components/notification-dialog/notification-dialog';

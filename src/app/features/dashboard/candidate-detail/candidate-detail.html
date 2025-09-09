@@ -40,12 +40,10 @@
             <p><strong>City:</strong> {{ candidate()?.city }}</p>
             <p><strong>Hobbies:</strong> {{ candidate()?.hobbies }}</p>
             <p><strong>Why:</strong> {{ candidate()?.why }}</p>
-            <p><strong>Summary:</strong> {{ candidate()?.summary }}</p>
             <p><strong>Submitted:</strong> {{ candidate()?.submittedAt | date:'medium' }}</p>
             @if(candidate()?.updatedAt){
             <p><strong>Last Updated:</strong> {{ candidate()?.updatedAt | date:'medium' }}</p>
             }
-            <p><strong>Source:</strong> {{ candidate()?.source || 'public' }}</p>
           </div>
         </div>
       </mat-card-content>

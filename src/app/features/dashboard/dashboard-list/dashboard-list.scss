@@ -5,6 +5,14 @@
   padding: 16px;
   max-width: 1200px;
   margin: 0 auto;
+
+  .header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
 }
 
 .filters-row {
@@ -32,7 +40,21 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 16px;
-  align-items: stretch; // גורם לכל התאים בשורה להימתח לגובה הכי גבוה
+  align-items: stretch;
+
+  .loader-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
 }
 
 app-candidate-card,
@@ -41,5 +63,3 @@ mat-card {
   display: flex;
   flex-direction: column;
 }
-
-

@@ -15,8 +15,8 @@ export interface Candidate {
   phone?: string;               // required on form, pattern e.g. /^[0-9+\- ]{7,15}$/
   age?: number;                 // required on form, min 18, max 80
   city?: string;                // required on form
-  hobbies?: string;             // optional longer text
-  why?: string;                 // required on form, minLength e.g. 20
+  hobbies?: string | null;             // optional longer text
+  why?: string | null;                 // required on form, minLength e.g. 20
   // --- media
   /**
    * Base64 data URL string (data:image/png;base64,...) or external url

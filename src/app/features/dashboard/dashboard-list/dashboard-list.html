@@ -1,5 +1,12 @@
 <section class="dashboard-container">
-  <h2 style="margin:0;">IISA Candidates</h2>
+    <div class="header-row">
+    <h2 style="margin:0;">IISA Candidates</h2>
+
+    <button mat-flat-button color="primary" [routerLink]="'/landing'">
+      <mat-icon>person_add</mat-icon>
+      Add Candidate
+    </button>
+  </div>
 
   <div class="filters-row">
     <mat-form-field class="filter-field" appearance="outline">
@@ -29,12 +36,17 @@
   </div>
 
   <div class="cards-grid">
+    @if(loading()){
+    <div class="loader-overlay">
+      <mat-spinner></mat-spinner>
+    </div>
+    }
     @for (c of filtered(); track c.id) {
     <app-candidate-card [candidate]="c"></app-candidate-card>
     }
   </div>
 
-  @if (!filtered().length) {
+  @if (!filtered().length && !loading()) {
   <p>No candidates match your search.</p>
   }
 </section>

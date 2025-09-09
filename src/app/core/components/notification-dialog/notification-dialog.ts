@@ -3,23 +3,16 @@ import { Component, Inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 
-// export type NotificationType = 'success' | 'error' | 'info' | 'warning';
 
 export type NotificationType = 'success' | 'error' | 'info' | 'warning' | 'confirm';
 
-
-// export interface NotificationData {
-//   title: string;
-//   message: string;
-//   type?: NotificationType;
-// }
 
 export interface NotificationData {
   title: string;
   message: string;
   type?: NotificationType;
-  confirmText?: string; // טקסט לכפתור אישור
-  cancelText?: string;  // טקסט לכפתור ביטול
+  confirmText?: string; 
+  cancelText?: string;
 }
 
 

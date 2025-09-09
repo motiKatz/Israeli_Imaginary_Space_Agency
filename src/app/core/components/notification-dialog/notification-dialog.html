@@ -1,25 +1,16 @@
-<!-- <h2 mat-dialog-title [ngClass]="data.type">{{ data.title }}</h2>
-<mat-dialog-content>
-  <p [ngClass]="data.type">{{ data.message }}</p>
-</mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-button mat-dialog-close>OK</button>
-</mat-dialog-actions> -->
-
-
 <h2 mat-dialog-title [ngClass]="data.type">{{ data.title }}</h2>
 <mat-dialog-content>
   <p [ngClass]="data.type">{{ data.message }}</p>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <!-- אם סוג הוא confirm נציג שני כפתורים -->
-  <ng-container *ngIf="data.type === 'confirm'; else okButton">
+  @if(data.type === 'confirm') {
+  <ng-container>
     <button mat-button [mat-dialog-close]="false">{{ data.cancelText || 'No' }}</button>
     <button mat-raised-button color="warn" [mat-dialog-close]="true">{{ data.confirmText || 'Yes' }}</button>
   </ng-container>
-
-  <ng-template #okButton>
+  } @else {
+  <ng-container>
     <button mat-button mat-dialog-close>OK</button>
-  </ng-template>
+  </ng-container>
+  }
 </mat-dialog-actions>
-

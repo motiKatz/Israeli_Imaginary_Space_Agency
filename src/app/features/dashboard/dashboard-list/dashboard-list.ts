@@ -1,4 +1,4 @@
-import { Component, signal, computed, effect, inject } from '@angular/core';
+import { Component, signal, computed, effect, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,6 +8,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { CandidateService } from '../../../core/services/candidate.service';
 import { CandidateCard } from '../candidate-card/candidate-card';
 import { Candidate } from '../../../core/models/candidate.model';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard-list',
@@ -18,15 +20,17 @@ import { Candidate } from '../../../core/models/candidate.model';
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    RouterLink
   ],
   templateUrl: './dashboard-list.html',
   styleUrl: './dashboard-list.scss'
 })
-export class DashboardList {
+export class DashboardList implements OnInit {
   private readonly candidatesService = inject(CandidateService);
-  protected readonly candidates = signal<Candidate[]>(this.candidatesService.getAll());
-
+  protected readonly candidates = signal<Candidate[]>([]);
+  protected readonly loading = signal(false);
   protected readonly nameQuery = signal('');
   protected readonly cityQuery = signal('');
   protected readonly ageQuery = signal(null);
@@ -36,17 +40,36 @@ export class DashboardList {
   constructor() {
     effect(() => {
       // Keep candidates in sync with service (live updates + storage events)
-      const sub = this.candidatesService.observeAll().subscribe(list => this.candidates.set(list));
-      return () => sub.unsubscribe();
+      // const sub = this.candidatesService.observeAll().subscribe(list => this.candidates.set(list));
+      // return () => sub.unsubscribe();
+
+      // const sub = this.candidatesService.getCandidates().subscribe(list => {
+      //   this.candidates.set(list);
+      // });
+      // return () => sub.unsubscribe();
     });
   }
 
-   protected readonly filtered = computed(() => {
+  ngOnInit(): void {
+    this.loading.set(true);
+    const sub = this.candidatesService.getCandidates().subscribe({
+      next: (list) => {
+        this.loading.set(false);
+        this.candidates.set(list);
+      },
+      error: () => {
+        console.log('Failed to load candidates');
+
+      }
+    })
+  }
+
+  protected readonly filtered = computed(() => {
     const name = this.nameQuery().toLowerCase().trim();
     const city = this.cityQuery().toLowerCase().trim();
     const age = this.ageQuery();
 
-    
+
 
     return this.candidates().filter(c =>
       (!name || c.name.toLowerCase().includes(name)) &&

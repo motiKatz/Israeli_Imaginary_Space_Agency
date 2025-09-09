@@ -24,19 +24,23 @@ export class CandidateDetail {
   private notify = inject(NotificationService);
 
 
-  protected readonly candidates = signal<Candidate[]>(this.candidatesService.getAll());
+  protected readonly candidates = signal<Candidate[]>([]);
   protected readonly currentId = signal<string>('');
 
   constructor() {
     effect(() => {
-      const sub = this.candidatesService.observeAll().subscribe(list => this.candidates.set(list));
+      // const sub = this.candidatesService.observeAll().subscribe(list => this.candidates.set(list));
+      // return () => sub.unsubscribe();
+
+      const sub = this.candidatesService.getCandidates().subscribe(list => {
+        this.candidates.set(list);
+      });
       return () => sub.unsubscribe();
     });
 
     this.route.paramMap
       .pipe(map(params => params.get('id') ?? ''))
       .subscribe(id => {
-        console.log(id);
         this.currentId.set(id);
       })
   }
@@ -60,9 +64,16 @@ export class CandidateDetail {
     this.notify.confirm('Are you sure you want to delete this candidate?', 'Delete Candidate')
       .subscribe(confirmed => {
         if (confirmed) {
-          this.candidatesService.remove(id)
-          this.notify.success('Candidate deleted successfully!');
-          this.router.navigate(['/dashboard']);
+          this.candidatesService.deleteCandidate(id).subscribe({
+            next: () => {
+              this.notify.success('Candidate deleted successfully!');
+              this.router.navigate(['/dashboard']);
+            },
+            error: () => {
+              this.notify.error('Candidate deleted failed!');
+            }
+          })
+
         }
       });
   }
