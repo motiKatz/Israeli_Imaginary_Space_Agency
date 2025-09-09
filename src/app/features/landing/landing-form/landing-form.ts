@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, DestroyRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,6 +11,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NotificationService } from '../../../core/services/notification';
 import { FileInput } from '../../../shared/components/file-input/file-input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 
 @Component({
@@ -20,6 +21,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrl: './landing-form.scss'
 })
 export class LandingForm {
+  private readonly destroyRef = inject(DestroyRef);
   private notify = inject(NotificationService);
   private readonly fb = inject(FormBuilder);
   private readonly service = inject(CandidateService);
@@ -48,25 +50,27 @@ export class LandingForm {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.loading.set(true);
-      this.service.getCandidateById(id).subscribe({
-        next: (existing) => {
-          this.loading.set(false);
-          const editable = this.canEdit(existing.updatedAt ?? existing.submittedAt);
-          this.form.patchValue(existing as any);
+      this.service.getCandidateById(id)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: (existing) => {
+            this.loading.set(false);
+            const editable = this.canEdit(existing.updatedAt ?? existing.submittedAt);
+            this.form.patchValue(existing as any);
 
-          if (existing.image) this.imagePreview.set(existing.image);
+            if (existing.image) this.imagePreview.set(existing.image);
 
-          this.isEditMode.set(true);
-          this.info.set(editable ? 'Editing candidate details' : 'Candidate details (view only, more than 3 days passed)');
+            this.isEditMode.set(true);
+            this.info.set(editable ? 'Editing candidate details' : 'Candidate details (view only, more than 3 days passed)');
 
-          if (!editable) {
-            this.form.disable();
+            if (!editable) {
+              this.form.disable();
+            }
+          },
+          error: () => {
+            this.notify.error('Candidate not found.');
           }
-        },
-        error: () => {
-          this.notify.error('Candidate not found.');
-        }
-      });
+        });
     } else {
       this.isEditMode.set(false);
       this.info.set('Register a new candidate');
@@ -103,40 +107,42 @@ export class LandingForm {
       ? this.service.addCandidate(candidate)
       : this.service.updateCandidate(candidate.id, candidate);
 
-    operation$.subscribe({
-      next: () => {
-        const msg = isCreation
-          ? 'Candidate details saved successfully!'
-          : 'Candidate details updated successfully!';
-        this.notify.success(msg);
+    operation$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          const msg = isCreation
+            ? 'Candidate details saved successfully!'
+            : 'Candidate details updated successfully!';
+          this.notify.success(msg);
 
-        if (isCreation) {
-          this.form.reset();
-          this.form.markAsUntouched();
-          this.form.markAsPristine();
-          Object.keys(this.form.controls).forEach(key => {
-            const control = this.form.get(key);
-            control?.markAsUntouched();
-            control?.markAsPristine();
-            control?.setErrors(null);
-          });
-          this.imagePreview.set(null);
-          this.info.set('Register a new candidate');
-        } else {
-          this.isEditMode.set(true);
-          this.info.set('Editing candidate details');
+          if (isCreation) {
+            this.form.reset();
+            this.form.markAsUntouched();
+            this.form.markAsPristine();
+            Object.keys(this.form.controls).forEach(key => {
+              const control = this.form.get(key);
+              control?.markAsUntouched();
+              control?.markAsPristine();
+              control?.setErrors(null);
+            });
+            this.imagePreview.set(null);
+            this.info.set('Register a new candidate');
+          } else {
+            this.isEditMode.set(true);
+            this.info.set('Editing candidate details');
+          }
+        },
+        error: () => {
+          const msg = isCreation
+            ? 'Error saving candidate details.'
+            : 'Error updating candidate details.';
+          this.notify.error(msg);
+        },
+        complete: () => {
+          this.submitting.set(false);
         }
-      },
-      error: () => {
-        const msg = isCreation
-          ? 'Error saving candidate details.'
-          : 'Error updating candidate details.';
-        this.notify.error(msg);
-      },
-      complete: () => {
-        this.submitting.set(false);
-      }
-    });
+      });
   }
 
 

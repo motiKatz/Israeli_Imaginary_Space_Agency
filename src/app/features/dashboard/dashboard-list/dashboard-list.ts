@@ -1,4 +1,4 @@
-import { Component, signal, computed, effect, inject, OnInit } from '@angular/core';
+import { Component, signal, computed, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -37,18 +37,7 @@ export class DashboardList implements OnInit {
 
 
 
-  constructor() {
-    effect(() => {
-      // Keep candidates in sync with service (live updates + storage events)
-      // const sub = this.candidatesService.observeAll().subscribe(list => this.candidates.set(list));
-      // return () => sub.unsubscribe();
-
-      // const sub = this.candidatesService.getCandidates().subscribe(list => {
-      //   this.candidates.set(list);
-      // });
-      // return () => sub.unsubscribe();
-    });
-  }
+  constructor() {}
 
   ngOnInit(): void {
     this.loading.set(true);

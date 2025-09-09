@@ -38,13 +38,31 @@ body {
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-.success-snackbar {
-  background: #4caf50 !important; 
+
+
+/* Success */
+.mat-mdc-snack-bar-container.snackbar-success .mat-mdc-snackbar-surface {
+  background-color: #4caf50 !important; 
   color: #fff !important;
 }
 
-.error-snackbar {
-  background: #f44336 !important;
+/* Error */
+.mat-mdc-snack-bar-container.snackbar-error .mat-mdc-snackbar-surface {
+  background-color: #f44336 !important; 
   color: #fff !important;
 }
+
+/* Info */
+.mat-mdc-snack-bar-container.snackbar-info .mat-mdc-snackbar-surface {
+  background-color: #2196f3 !important; 
+  color: #fff !important;
+}
+
+/* Warning */
+.mat-mdc-snack-bar-container.snackbar-warning .mat-mdc-snackbar-surface {
+  background-color: #ff9800 !important; 
+  color: #fff !important;
+}
+
+
 

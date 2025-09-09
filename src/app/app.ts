@@ -11,5 +11,4 @@ import { Firestore, collection, addDoc } from '@angular/fire/firestore';
 })
 export class App {
   protected readonly title = signal('iisa');
-
 }
