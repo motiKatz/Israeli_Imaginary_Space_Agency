@@ -12,6 +12,7 @@ import { NotificationService } from '../../../core/services/notification';
 import { FileInput } from '../../../shared/components/file-input/file-input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
 
 
 @Component({
@@ -56,7 +57,15 @@ export class LandingForm {
     if (id) {
       this.loading.set(true);
       this.service.getCandidateById(id)
-        .pipe(takeUntilDestroyed(this.destroyRef))
+        .pipe(
+          takeUntilDestroyed(this.destroyRef),
+          map(existing => {
+            if (!existing) {
+              throw new Error('Candidate not found'); 
+            }
+            return existing;
+          })
+        )
         .subscribe({
           next: (existing) => {
             this.loading.set(false);
@@ -72,8 +81,9 @@ export class LandingForm {
               this.form.disable();
             }
           },
-          error: () => {
-            this.notify.error('Candidate not found.');
+          error: (error) => {
+            this.loading.set(false);
+            this.notify.error(error.message || 'Candidate not found.');
           }
         });
     } else {

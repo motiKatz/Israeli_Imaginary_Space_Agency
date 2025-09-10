@@ -15,7 +15,7 @@ export class NotificationService {
   ) {
     const config: MatSnackBarConfig = {
       duration: 3000,
-      panelClass: ['snackbar-success'], 
+      panelClass: [`snackbar-${type}`], 
       horizontalPosition: 'right',
       verticalPosition: 'top',
     };
