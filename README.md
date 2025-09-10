@@ -56,5 +56,4 @@ src/app/
 - Material theme added via `ng add @angular/material@20`.
 
 ## Deployment
-- Suggested: Vercel/Netlify/GitHub Pages.
 - Build with `npm run build` and deploy `dist/iisa`.
