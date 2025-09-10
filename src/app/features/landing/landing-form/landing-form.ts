@@ -38,7 +38,12 @@ export class LandingForm {
     id: [''],
     name: ['', [Validators.required, Validators.minLength(2)]],
     email: ['', [Validators.required, Validators.email]],
-    phone: ['', [Validators.required]],
+    phone: ['',
+      [
+        Validators.required,
+        // Validators.pattern(/^\+?\d{7,15}$/)
+      ]
+    ],
     age: [null as number | null, [Validators.required, Validators.min(18), Validators.max(80)]],
     city: ['', [Validators.required]],
     hobbies: [''],
