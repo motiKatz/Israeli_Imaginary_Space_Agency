@@ -11,10 +11,11 @@ import { InitialsPipe } from '../../../shared/pipes/initials-pipe';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { NotificationService } from '../../../core/services/notification';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-candidate-detail',
-  imports: [CommonModule, RouterLink, MatCardModule, MatButtonModule, InitialsPipe, MatIconModule, MatMenuModule],
+  imports: [CommonModule, RouterLink, MatCardModule, MatButtonModule, InitialsPipe, MatIconModule, MatMenuModule, MatProgressSpinnerModule],
   templateUrl: './candidate-detail.html',
   styleUrl: './candidate-detail.scss'
 })
@@ -27,6 +28,8 @@ export class CandidateDetail implements OnInit {
   protected readonly currentId = signal<string>('');
   protected readonly index = computed(() => this.candidates().findIndex(c => c.id === this.currentId()));
   protected readonly id = computed(() => this.currentId());
+  protected readonly loading = signal(false);
+
   protected readonly candidate = computed(() => {
     const i = this.index();
     return i >= 0 ? this.candidates()[i] : undefined;
@@ -42,8 +45,8 @@ export class CandidateDetail implements OnInit {
 
   private readonly destroyRef = inject(DestroyRef);
 
-  constructor() { 
-   this.route.paramMap
+  constructor() {
+    this.route.paramMap
       .pipe(
         map(params => params.get('id') ?? ''),
         takeUntilDestroyed(this.destroyRef)
@@ -53,10 +56,12 @@ export class CandidateDetail implements OnInit {
       })
   }
   ngOnInit(): void {
+    this.loading.set(true);
     this.candidatesService.getCandidates()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(list => {
         this.candidates.set(list);
+        this.loading.set(false);
       });
   }
 

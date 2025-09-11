@@ -61,7 +61,7 @@ export class LandingForm {
           takeUntilDestroyed(this.destroyRef),
           map(existing => {
             if (!existing) {
-              throw new Error('Candidate not found'); 
+              throw new Error('Candidate not found');
             }
             return existing;
           })
@@ -130,6 +130,8 @@ export class LandingForm {
             ? 'Candidate details saved successfully!'
             : 'Candidate details updated successfully!';
           this.notify.success(msg);
+          this.submitting.set(false);
+
 
           if (isCreation) {
             this.form.reset();
@@ -153,10 +155,9 @@ export class LandingForm {
             ? 'Error saving candidate details.'
             : 'Error updating candidate details.';
           this.notify.error(msg);
-        },
-        complete: () => {
           this.submitting.set(false);
-        }
+        },
+       
       });
   }
 
